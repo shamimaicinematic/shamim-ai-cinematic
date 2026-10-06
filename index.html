@@ -11,7 +11,7 @@
     .app { max-width: 480px; margin: 0 auto; background: var(--card); min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
     .header { padding: 16px; font-size: 20px; font-weight: bold; background: var(--primary); color: white; display: flex; justify-content: space-between; align-items: center; }
     .content { padding: 16px; flex: 1; overflow-y: auto; padding-bottom: 80px; }
-    .nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 0; }
+    .nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; }
     .nav button { background: none; border: none; font-size: 14px; color: var(--muted); cursor: pointer; }
     .nav button.active { color: var(--primary); font-weight: bold; }
     .card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
@@ -101,7 +101,7 @@
         const { data, error } = await _supabase.auth.signUp({ email, password });
         if (error) alert(error.message);
         else {
-          alert('সফলভাবে সাইন আপ হয়েছে! আপনার ইমেইল চেক করুন অথবা সরাসরি লগইন করুন।');
+          alert('সফলভাবে সাইন আপ হয়েছে! এবার লগইন করুন।');
           isSignup = false;
           toggleAuthMode();
         }
@@ -110,23 +110,20 @@
         if (error) alert(error.message);
         else {
           alert('সফলভাবে লগইন হয়েছে!');
-          checkUser();
-          switchScreen('home', document.querySelector('.nav button'));
+          location.reload();
         }
       }
     }
 
     async function handleLogout() {
       await _supabase.auth.signOut();
-      checkUser();
       alert('লগআউট সফল হয়েছে!');
-      switchScreen('home', document.querySelector('.nav button'));
+      location.reload();
     }
 
     async function checkUser() {
       const { data: { user } } = await _supabase.auth.getUser();
       const statusEl = document.getElementById('user-status');
-      const profileName = document.getElementById('profile-name');
       const profileEmail = document.getElementById('profile-email');
       const navAuthBtn = document.getElementById('nav-auth-btn');
 
